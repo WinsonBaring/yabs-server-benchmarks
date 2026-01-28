@@ -8,8 +8,7 @@ import {
     Globe,
     Gauge,
     LayoutDashboard,
-    Zap,
-    History
+    Zap
 } from 'lucide-react';
 import {
     ResponsiveContainer,
@@ -57,9 +56,9 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                                     gap: '0.75rem',
                                     padding: '1rem',
                                     borderRadius: '0.75rem',
-                                    background: activeSection === item.id ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
+                                    background: activeSection === item.id ? 'var(--primary)' : 'var(--bg-glass-accent)',
                                     border: '1px solid var(--border-glass)',
-                                    color: activeSection === item.id ? 'white' : 'var(--text-muted)',
+                                    color: activeSection === item.id ? 'white' : 'var(--text-main)',
                                     textAlign: 'left',
                                     transition: 'all 0.2s ease',
                                     fontWeight: 600
@@ -71,16 +70,24 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                         ))}
                     </nav>
 
-                    <div style={{ marginTop: '2rem', padding: '1rem', background: 'rgba(0,0,0,0.2)', borderRadius: '1rem', border: '1px solid var(--border-glass)' }}>
-                        <p className="text-muted" style={{ fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Switch Date</p>
+                    <div style={{ marginTop: '2rem', padding: '1.25rem', background: 'var(--bg-glass-accent)', borderRadius: '1rem', border: '1px solid var(--border-glass)' }}>
+                        <p className="text-muted" style={{ fontSize: '0.7rem', fontWeight: 800, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Switch Date</p>
                         <select
-                            style={{ width: '100%', background: 'transparent', border: 'none', color: 'white', fontSize: '0.85rem' }}
+                            style={{
+                                width: '100%',
+                                background: 'var(--bg-card)',
+                                border: '1px solid var(--border-glass)',
+                                color: 'var(--text-main)',
+                                fontSize: '0.85rem',
+                                padding: '0.5rem',
+                                borderRadius: '0.5rem'
+                            }}
                             value={benchmark.id}
                             onChange={(e) => onSelectVersion(e.target.value)}
                         >
                             {history.map(h => (
-                                <option key={h.id} value={h.id} style={{ background: '#1e293b' }}>
-                                    {new Date(h.timestamp).toLocaleDateString()} at {new Date(h.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                <option key={h.id} value={h.id} style={{ background: 'var(--bg-card)', color: 'var(--text-main)' }}>
+                                    {new Date(h.timestamp).toLocaleDateString()}
                                 </option>
                             ))}
                         </select>
@@ -157,11 +164,11 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                                     <h3>Power Test (GB6)</h3>
                                 </div>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                    <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '0.75rem', textAlign: 'center' }}>
+                                    <div style={{ background: 'var(--bg-glass-accent)', padding: '1rem', borderRadius: '0.75rem', textAlign: 'center' }}>
                                         <p className="text-muted" style={{ fontSize: '0.8rem' }}>Single Core</p>
                                         <p style={{ fontSize: '1.5rem', fontWeight: 800 }}>{benchmark.geekbench_single}</p>
                                     </div>
-                                    <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '0.75rem', textAlign: 'center' }}>
+                                    <div style={{ background: 'var(--bg-glass-accent)', padding: '1rem', borderRadius: '0.75rem', textAlign: 'center' }}>
                                         <p className="text-muted" style={{ fontSize: '0.8rem' }}>Multi Core</p>
                                         <p style={{ fontSize: '1.5rem', fontWeight: 800 }}>{benchmark.geekbench_multi}</p>
                                     </div>
@@ -197,18 +204,19 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                                         <XAxis dataKey="name" stroke="var(--text-muted)" />
                                         <YAxis stroke="var(--text-muted)" label={{ value: 'MB/s', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)' }} />
                                         <Tooltip
-                                            contentStyle={{ background: 'var(--bg-dark)', border: '1px solid var(--border-glass)', borderRadius: '0.75rem' }}
-                                            formatter={(value: any, name: any, props: any) => [`${props.payload.label}`, 'Speed']}
+                                            contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-glass)', borderRadius: '0.75rem', color: 'var(--text-main)' }}
+                                            itemStyle={{ color: 'var(--primary)' }}
+                                            formatter={(val: any, _name: any, props: any) => [`${props.payload.label}`, 'Speed']}
                                         />
                                         <Bar dataKey="speed" fill="var(--primary)" radius={[6, 6, 0, 0]} />
                                     </RechartsBarChart>
                                 </ResponsiveContainer>
                             </div>
 
-                            <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '1rem', overflow: 'hidden' }}>
+                            <div style={{ background: 'var(--bg-glass-accent)', borderRadius: '1rem', overflow: 'hidden', border: '1px solid var(--border-glass)' }}>
                                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                                     <thead>
-                                        <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-glass)', background: 'rgba(255,255,255,0.03)' }}>
+                                        <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-glass)', background: 'var(--table-head)' }}>
                                             <th style={{ padding: '1rem' }}>Task Type (Block)</th>
                                             <th style={{ padding: '1rem' }}>Speed</th>
                                             <th style={{ padding: '1rem' }}>Operations/sec (IOPS)</th>
@@ -216,7 +224,7 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                                     </thead>
                                     <tbody>
                                         {benchmark.raw_data?.disk?.results?.map((r: any, idx: number) => (
-                                            <tr key={idx} style={{ borderBottom: idx < benchmark.raw_data.disk.results.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+                                            <tr key={idx} style={{ borderBottom: idx < benchmark.raw_data.disk.results.length - 1 ? '1px solid var(--border-glass)' : 'none' }}>
                                                 <td style={{ padding: '1rem', fontWeight: 600 }}>{r.block === '4k' ? 'Small Apps (4k)' : r.block === '64k' ? 'Large Apps (64k)' : r.block === '512k' ? 'Bulk Move (512k)' : 'Sequential (1m)'}</td>
                                                 <td style={{ padding: '1rem' }}>{r.speed}</td>
                                                 <td style={{ padding: '1rem', color: 'var(--primary)', fontWeight: 700 }}>{r.iops}</td>
@@ -231,10 +239,10 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                             <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Globe size={20} style={{ color: 'var(--accent-purple)' }} /> Internet Connection Matrix
                             </h3>
-                            <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '1rem', overflow: 'hidden' }}>
+                            <div style={{ background: 'var(--bg-glass-accent)', borderRadius: '1rem', overflow: 'hidden', border: '1px solid var(--border-glass)' }}>
                                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                     <thead>
-                                        <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-glass)' }}>
+                                        <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-glass)', background: 'var(--table-head)' }}>
                                             <th style={{ padding: '1rem' }}>Location</th>
                                             <th style={{ padding: '1rem' }}>Upload</th>
                                             <th style={{ padding: '1rem' }}>Download</th>
@@ -243,7 +251,7 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                                     </thead>
                                     <tbody>
                                         {benchmark.raw_data?.network?.map((n: any, idx: number) => (
-                                            <tr key={idx} style={{ borderBottom: idx < benchmark.raw_data.network.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+                                            <tr key={idx} style={{ borderBottom: idx < benchmark.raw_data.network.length - 1 ? '1px solid var(--border-glass)' : 'none' }}>
                                                 <td style={{ padding: '1rem' }}>{n.location}</td>
                                                 <td style={{ padding: '1rem' }}>{n.speed}</td>
                                                 <td style={{ padding: '1rem' }}>{n.recv}</td>

@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import {
   Plus,
   Trash2,
-  Home
+  Home,
+  Sun,
+  Moon
 } from 'lucide-react';
 import type { Benchmark } from './types';
 import { LandingPage } from './components/LandingPage';
@@ -58,16 +60,23 @@ const App = () => {
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; id: string; name: string; all: boolean }>({
     isOpen: false, id: '', name: '', all: false
   });
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    return (localStorage.getItem('vault_theme') as 'light' | 'dark') || 'dark';
+  });
 
   useEffect(() => {
     const saved = localStorage.getItem('benchmark_vault');
     if (saved) {
       const parsed = JSON.parse(saved);
       setBenchmarks(parsed);
-      // If we have data, we'll still show landing first time unless they've interacted
       if (parsed.length > 0) setShowLanding(true);
     }
   }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('vault_theme', theme);
+  }, [theme]);
 
   const saveToLocals = (data: Benchmark[]) => {
     localStorage.setItem('benchmark_vault', JSON.stringify(data));
@@ -134,56 +143,83 @@ const App = () => {
         </div>
       )}
 
+      <header style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '2rem' }}>
+        <div style={{ cursor: 'pointer' }} onClick={() => { setSelectedId(null); setShowLanding(false); }}>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.25rem', color: 'var(--text-main)', fontWeight: 800 }}>Server Vault</h1>
+          <p className="text-muted" style={{ fontSize: '0.9rem' }}>Simple history and speed tracking for your servers.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            style={{
+              background: 'var(--bg-glass)',
+              border: '1px solid var(--border-glass)',
+              padding: '0.75rem',
+              borderRadius: '0.8rem',
+              cursor: 'pointer',
+              color: 'var(--text-main)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            className="hover-bright"
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
+          {(!showLanding || selectedId) && (
+            <button
+              className="btn-primary"
+              style={{
+                background: 'var(--bg-glass)',
+                color: 'var(--text-main)',
+                border: '1px solid var(--border-glass)',
+                boxShadow: 'none'
+              }}
+              onClick={() => { setShowLanding(true); setSelectedId(null); setIsUploading(false); }}
+            >
+              <Home size={20} style={{ marginRight: '0.5rem', verticalAlign: 'middle', color: 'var(--text-main)' }} />
+              Home
+            </button>
+          )}
+
+          {!isUploading && (
+            <button className="btn-primary" onClick={() => setIsUploading(true)}>
+              <Plus size={20} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+              Add Server
+            </button>
+          )}
+        </div>
+      </header>
+
       {showLanding && !selectedId && !isUploading ? (
         <LandingPage
           onStart={() => setShowLanding(false)}
           copyCommand={copyCommand}
           isCopied={isCopied}
         />
-      ) : (
-        <>
-          <header style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ cursor: 'pointer' }} onClick={() => { setSelectedId(null); setShowLanding(false); }}>
-              <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Server Vault</h1>
-              <p className="text-muted">Simple history and speed tracking for your servers.</p>
-            </div>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <button className="btn-primary" style={{ background: 'var(--bg-glass)' }} onClick={() => { setShowLanding(true); setSelectedId(null); setIsUploading(false); }}>
-                <Home size={20} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
-                Home
-              </button>
-              {!isUploading && (
-                <button className="btn-primary" onClick={() => setIsUploading(true)}>
-                  <Plus size={20} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
-                  Add Server
-                </button>
-              )}
-            </div>
-          </header>
-
-          {isUploading ? (
-            <UploadWizard
-              onUpload={handleUpload}
-              onCancel={() => { setIsUploading(false); if (benchmarks.length === 0) setShowLanding(true); }}
-              sampleYabs={SAMPLE_YABS}
-            />
-          ) : !selectedId ? (
-            <Dashboard
-              benchmarks={benchmarks}
-              setSelectedId={setSelectedId}
-              handleDeleteTrigger={handleDeleteTrigger}
-            />
-          ) : benchmarkDetail ? (
-            <BenchmarkDetail
-              benchmark={benchmarkDetail}
-              history={historyList}
-              onBack={() => setSelectedId(null)}
-              onSelectVersion={setSelectedId}
-              onDelete={(id) => setDeleteModal({ isOpen: true, id, name: String(benchmarkDetail.server_name), all: false })}
-            />
-          ) : null}
-        </>
-      )}
+      ) : isUploading ? (
+        <UploadWizard
+          onUpload={handleUpload}
+          onCancel={() => { setIsUploading(false); if (benchmarks.length === 0) setShowLanding(true); }}
+          sampleYabs={SAMPLE_YABS}
+        />
+      ) : !selectedId ? (
+        <Dashboard
+          benchmarks={benchmarks}
+          setSelectedId={setSelectedId}
+          handleDeleteTrigger={handleDeleteTrigger}
+        />
+      ) : benchmarkDetail ? (
+        <BenchmarkDetail
+          benchmark={benchmarkDetail}
+          history={historyList}
+          onBack={() => setSelectedId(null)}
+          onSelectVersion={setSelectedId}
+          onDelete={(id) => setDeleteModal({ isOpen: true, id, name: String(benchmarkDetail.server_name), all: false })}
+        />
+      ) : null}
     </div>
   );
 };

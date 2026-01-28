@@ -31,7 +31,17 @@ export const LandingPage = ({ onStart, copyCommand, isCopied }: LandingPageProps
                 }}>
                     <Activity size={16} /> Track, Compare, Improve
                 </div>
-                <h1 style={{ fontSize: '4.5rem', fontWeight: 900, letterSpacing: '-0.05em', lineHeight: 1.1, marginBottom: '1.5rem', background: 'linear-gradient(to bottom right, #fff 30%, #94a3b8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <h1 style={{
+                    fontSize: '4.5rem',
+                    fontWeight: 900,
+                    letterSpacing: '-0.05em',
+                    lineHeight: 1.1,
+                    marginBottom: '1.5rem',
+                    background: 'var(--text-main)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundImage: 'linear-gradient(to bottom right, var(--text-main) 30%, var(--text-muted))'
+                }}>
                     Your Server History,<br />Simplified & Beautiful.
                 </h1>
                 <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '750px', margin: '0 auto 3rem', lineHeight: 1.8 }}>
@@ -44,21 +54,22 @@ export const LandingPage = ({ onStart, copyCommand, isCopied }: LandingPageProps
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '1rem',
-                        background: 'rgba(0,0,0,0.3)',
+                        background: 'var(--bg-glass-accent)',
                         padding: '1rem 1.5rem',
                         borderRadius: '1rem',
                         border: '1px solid var(--border-glass)',
                         marginBottom: '3rem',
                         fontFamily: 'monospace',
                         fontSize: '1rem',
-                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.2)',
+                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
-                        position: 'relative'
+                        position: 'relative',
+                        color: 'var(--text-main)'
                     }}
                     className="hover-bright"
                 >
-                    <code style={{ color: 'var(--primary)' }}>curl -sL yabs.sh | bash</code>
+                    <code style={{ color: 'var(--primary)', background: 'transparent', padding: 0 }}>curl -sL yabs.sh | bash</code>
                     <div style={{ borderLeft: '1px solid var(--border-glass)', height: '20px' }}></div>
                     <span style={{ fontSize: '0.75rem', color: isCopied ? '#22c55e' : 'var(--text-muted)' }}>
                         {isCopied ? 'Copied!' : 'Click to copy command'}

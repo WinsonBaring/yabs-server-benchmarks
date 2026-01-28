@@ -113,7 +113,11 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
     };
 
     return (
-        <section className="glass-card" style={{ borderLeft: '4px solid var(--primary)', background: 'linear-gradient(to right, rgba(99, 102, 241, 0.05), transparent)' }}>
+        <section className="glass-card" style={{
+            borderLeft: '4px solid var(--primary)',
+            background: 'var(--bg-glass)',
+            backgroundImage: 'linear-gradient(to right, var(--primary-glow), transparent)'
+        }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
@@ -142,7 +146,7 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
                     maxHeight: '400px',
                     overflowY: 'auto',
                     padding: '1rem',
-                    background: 'rgba(0,0,0,0.15)',
+                    background: 'var(--bg-glass-accent)',
                     borderRadius: '1.25rem',
                     border: '1px solid var(--border-glass)',
                     scrollbarWidth: 'thin'
@@ -178,7 +182,7 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
                                 style={{
                                     padding: '1.25rem',
                                     borderRadius: '1rem',
-                                    background: isSelected ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.02)',
+                                    background: isSelected ? 'var(--bg-glass)' : 'var(--bg-glass-accent)',
                                     border: isSelected ? `2px solid ${perfColor}` : '1px solid var(--border-glass)',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s ease',
@@ -222,7 +226,16 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
             </div>
 
             {showGlossary && (
-                <div className="animate-fade-in" style={{ marginBottom: '2.5rem', padding: '1.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '1rem', border: '1px solid var(--border-glass)', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
+                <div className="animate-fade-in" style={{
+                    marginBottom: '2.5rem',
+                    padding: '1.5rem',
+                    background: 'var(--bg-glass-accent)',
+                    borderRadius: '1rem',
+                    border: '1px solid var(--border-glass)',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1fr',
+                    gap: '1.5rem'
+                }}>
                     <div>
                         <h4 style={{ fontSize: '0.85rem', color: 'var(--primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}><Wifi size={14} /> Delay (Ping)</h4>
                         <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>How long it takes for a click to reach the server and come back.</p>
@@ -241,7 +254,7 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
             <div className="grid grid-cols-3" style={{ gap: '1.5rem' }}>
                 {/* Website Clicks - Latency Dependent */}
                 <div style={{
-                    background: 'rgba(0,0,0,0.2)',
+                    background: 'var(--bg-glass-accent)',
                     padding: '1.5rem',
                     borderRadius: '1rem',
                     border: `1px solid ${pingColor}33`,
@@ -272,7 +285,7 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
 
                 {/* File Loading - Speed Dependent */}
                 <div style={{
-                    background: 'rgba(0,0,0,0.2)',
+                    background: 'var(--bg-glass-accent)',
                     padding: '1.5rem',
                     borderRadius: '1rem',
                     border: `1px solid ${speedColor}33`,
@@ -291,7 +304,15 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
                                 type="number"
                                 value={fileSize}
                                 onChange={(e) => setFileSize(Math.max(1, parseInt(e.target.value) || 1))}
-                                style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-glass)', color: 'white', padding: '0.4rem', borderRadius: '0.4rem', fontSize: '0.8rem' }}
+                                style={{
+                                    width: '100%',
+                                    background: 'var(--bg-glass-accent)',
+                                    border: '1px solid var(--border-glass)',
+                                    color: 'var(--text-main)',
+                                    padding: '0.4rem',
+                                    borderRadius: '0.4rem',
+                                    fontSize: '0.8rem'
+                                }}
                             />
                         </div>
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Simulate loading a {fileSize}MB file.</p>
@@ -312,7 +333,7 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
 
                 {/* Save to Database - General Connection Health */}
                 <div style={{
-                    background: 'rgba(0,0,0,0.2)',
+                    background: 'var(--bg-glass-accent)',
                     padding: '1.5rem',
                     borderRadius: '1rem',
                     border: `1px solid ${generalColor}33`,
@@ -343,14 +364,14 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
             </div>
 
             {(isSimulating || simResult) && (
-                <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(99, 102, 241, 0.1)', borderRadius: '1rem', border: '1px solid rgba(99, 102, 241, 0.2)' }}>
+                <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'var(--bg-glass-accent)', borderRadius: '1rem', border: '1px solid var(--border-glass)' }}>
                     {isSimulating ? (
                         <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                                 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Testing...</span>
                                 <span>{Math.round(simProgress)}%</span>
                             </div>
-                            <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                            <div style={{ width: '100%', height: '8px', background: 'var(--border-glass)', borderRadius: '4px', overflow: 'hidden' }}>
                                 <div style={{ width: `${simProgress}%`, height: '100%', background: 'var(--primary)', transition: 'width 0.1s linear' }} />
                             </div>
                         </div>
