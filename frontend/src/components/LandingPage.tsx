@@ -2,8 +2,6 @@ import {
     Activity,
     ArrowRight,
     Zap,
-    CheckCircle2,
-    History,
     Shield,
     Globe
 } from 'lucide-react';

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
     Gauge,
     Wifi,
@@ -21,6 +21,14 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
     const [showGlossary, setShowGlossary] = useState(true);
     const [selectedNodeIndex, setSelectedNodeIndex] = useState<number>(0);
     const [fileSize, setFileSize] = useState<number>(100);
+    const simIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    // Cleanup interval on unmount
+    useEffect(() => {
+        return () => {
+            if (simIntervalRef.current) clearInterval(simIntervalRef.current);
+        };
+    }, []);
 
     const networkNodes = benchmark.raw_data?.network || [];
 
@@ -46,6 +54,12 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
     const generalColor = (pingNum < 150 && speedNum > 100) ? '#22c55e' : (pingNum > 250 || speedNum < 50) ? '#ef4444' : '#eab308';
 
     const runSimulation = (type: 'latency' | 'download' | 'io') => {
+        // Stop any existing simulation
+        if (simIntervalRef.current) {
+            clearInterval(simIntervalRef.current);
+            simIntervalRef.current = null;
+        }
+
         setIsSimulating(true);
         setSimProgress(0);
         setSimResult(null);
@@ -72,7 +86,8 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
             setSimProgress(progress);
 
             if (elapsed >= duration) {
-                clearInterval(interval);
+                if (simIntervalRef.current) clearInterval(simIntervalRef.current);
+                simIntervalRef.current = null;
                 setSimProgress(100);
                 setTimeout(() => {
                     setIsSimulating(false);
@@ -93,6 +108,8 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
                 }, 300);
             }
         }, 50);
+
+        simIntervalRef.current = interval;
     };
 
     return (
@@ -241,7 +258,6 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
                     </div>
                     <button
                         className="btn-primary"
-                        disabled={isSimulating}
                         onClick={() => runSimulation('latency')}
                         style={{
                             width: '100%',
@@ -282,7 +298,6 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
                     </div>
                     <button
                         className="btn-primary"
-                        disabled={isSimulating}
                         onClick={() => runSimulation('download')}
                         style={{
                             width: '100%',
@@ -314,7 +329,6 @@ export const SimulationLab = ({ benchmark }: SimulationLabProps) => {
                     </div>
                     <button
                         className="btn-primary"
-                        disabled={isSimulating}
                         onClick={() => runSimulation('io')}
                         style={{
                             width: '100%',
