@@ -14,8 +14,8 @@ interface LandingPageProps {
 
 export const LandingPage = ({ onStart, copyCommand, isCopied }: LandingPageProps) => {
     return (
-        <div className="animate-fade-in" style={{ padding: '4rem 0' }}>
-            <div style={{ textAlign: 'center', marginBottom: '5rem', position: 'relative' }}>
+        <div className="animate-fade-in" style={{ padding: '1rem 0' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem', position: 'relative' }}>
                 <div style={{
                     display: 'inline-flex',
                     alignItems: 'center',

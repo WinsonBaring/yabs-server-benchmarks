@@ -143,10 +143,10 @@ const App = () => {
         </div>
       )}
 
-      <header style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '2rem' }}>
+      <header style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem' }}>
         <div style={{ cursor: 'pointer' }} onClick={() => { setSelectedId(null); setShowLanding(false); }}>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.25rem', color: 'var(--text-main)', fontWeight: 800 }}>Server Vault</h1>
-          <p className="text-muted" style={{ fontSize: '0.9rem' }}>Simple history and speed tracking for your servers.</p>
+          <h1 style={{ fontSize: '1.75rem', marginBottom: '0.1rem', color: 'var(--text-main)', fontWeight: 800 }}>Server Vault</h1>
+          <p className="text-muted" style={{ fontSize: '0.8rem' }}>Simple history and speed tracking.</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <button
