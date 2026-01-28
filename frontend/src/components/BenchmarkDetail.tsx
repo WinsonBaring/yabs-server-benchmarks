@@ -206,7 +206,7 @@ export const BenchmarkDetail = ({ benchmark, history, onBack, onSelectVersion, o
                                         <Tooltip
                                             contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-glass)', borderRadius: '0.75rem', color: 'var(--text-main)' }}
                                             itemStyle={{ color: 'var(--primary)' }}
-                                            formatter={(val: any, _name: any, props: any) => [`${props.payload.label}`, 'Speed']}
+                                            formatter={(_val: any, _name: any, props: any) => [`${props.payload.label}`, 'Speed']}
                                         />
                                         <Bar dataKey="speed" fill="var(--primary)" radius={[6, 6, 0, 0]} />
                                     </RechartsBarChart>
