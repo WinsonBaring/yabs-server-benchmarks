@@ -1,4 +1,5 @@
 :root {
+  zoom: 0.7;
   --primary: #6366f1;
   --primary-glow: rgba(99, 102, 241, 0.4);
   --accent-purple: #a855f7;
@@ -42,6 +43,146 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: 80px;
+  /* Space for fixed navbar */
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-content {
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.docs-overlay {
+  position: fixed;
+  top: 70px;
+  /* Below the navbar */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-dark);
+  z-index: 1500;
+  /* Above regular content, below navbar if needed, or navbar above this */
+  overflow-y: auto;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.no-scroll {
+  overflow: hidden !important;
+}
+
+.docs-container {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+}
+
+.docs-close {
+  position: fixed;
+  top: calc(70px + 2rem);
+  /* Clear original navbar height */
+  right: 3rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  padding: 0.8rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1600;
+  /* Above overlay (1500) but below navbar if overlapping (2000) */
+  transition: all 0.2s;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.docs-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Markdown Rendering Styles (VitePress-inspired) */
+.markdown-body {
+  color: var(--text-main);
+  line-height: 1.7;
+}
+
+.markdown-body h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.markdown-body h2 {
+  font-size: 1.8rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.markdown-body p {
+  margin-bottom: 1.25rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.markdown-body code {
+  background: var(--bg-glass-accent);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.4rem;
+  font-family: inherit;
+  color: var(--primary);
+}
+
+.markdown-body pre {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--border-glass);
+  margin: 1.5rem 0;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+  color: #fff;
+}
+
+.markdown-body ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+}
+
+.markdown-body li {
+  margin-bottom: 0.5rem;
 }
 
 .container {
